@@ -135,53 +135,25 @@ The following table details the primary HTTP endpoints provided by the edge serv
 
 ---
 
-## 6. Developer & Contributor Guide
+## 6. Repository Scope & Architecture Overview
 
-### 6.1. Prerequisites
-- **Node.js:** `>= 20.0.0`
-- **Package Manager:** `pnpm >= 10.0.0` (Corepack recommended: `corepack enable`)
-- **Native Tools (Optional for Mobile):** Android Studio / Xcode, Expo CLI
+> [!NOTE]
+> This repository serves as the **public showcase and architectural documentation** for **DerbyGoal**, outlining its engineering principles, high-level design, and system interfaces. The core operational codebase, proprietary game engine packages, and private infrastructure pipelines are maintained in **private repositories** for security and intellectual property protection.
 
-### 6.2. Environment Configuration
-Create `.env.local` inside `apps/web/` and `.env` inside `apps/mobile/`:
+### 6.1. Monorepo Modular Structure
 
-```env
-# Database & Persistence (Neon Serverless PostgreSQL)
-DATABASE_URL="postgresql://user:password@ep-sample-pool.eu-central-1.aws.neon.tech/neondb?sslmode=require"
+The private source monorepo is structured around modular, loosely coupled workspaces:
+- **`apps/web`**: Next.js 14 App Router, Tailwind CSS, Framer Motion UI, and edge API handlers.
+- **`apps/mobile`**: React Native & Expo 51+ cross-platform mobile client.
+- **`packages/game-engine`**: Platform-agnostic seeded PRNG rule resolution and state-machine core.
+- **`packages/shared-types`**: Shared TypeScript contracts, DTO schemas, and domain interfaces.
 
-# Real-time WebSocket Gateway (Ably)
-ABLY_API_KEY="your-ably-api-key"
+### 6.2. Production Infrastructure & Integrations
 
-# Client Application URLs
-NEXT_PUBLIC_APP_URL="https://derbygoal.com"
-```
-
-### 6.3. Development Workflow
-
-1. **Install Dependencies Across Monorepo:**
-   ```bash
-   pnpm install
-   ```
-
-2. **Run Full-Stack Type Verification:**
-   ```bash
-   pnpm typecheck
-   ```
-
-3. **Launch Web Environment:**
-   ```bash
-   pnpm dev
-   ```
-
-4. **Launch Mobile Environment (Expo Metro Bundler):**
-   ```bash
-   pnpm mobile:start
-   ```
-
-5. **Lint and Code Quality Validation:**
-   ```bash
-   pnpm lint
-   ```
+The production environment operates seamlessly across serverless and cloud service providers:
+- **Database Layer:** Neon Serverless PostgreSQL & Drizzle ORM
+- **Real-Time Communication:** Ably Realtime WebSocket infrastructure
+- **Monetization & Billing:** Stripe (Web) and RevenueCat (Mobile / In-App Purchases)
 
 ---
 

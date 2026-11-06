@@ -135,53 +135,25 @@ Aşağıdaki tabloda ana sunucu ağ geçidinin sağladığı temel REST uç nokt
 
 ---
 
-## 6. Geliştirici Kılavuzu
+## 6. Proje Durumu ve Depo Yapısı
 
-### 6.1. Ön Gereksinimler
-- **Node.js:** `>= 20.0.0`
-- **Paket Yöneticisi:** `pnpm >= 10.0.0` (`corepack enable` komutu ile etkinleştirilebilir)
-- **Mobil Geliştirme Araçları (Opsiyonel):** Expo CLI, Android Studio / Xcode
+> [!NOTE]
+> Bu depo, **DerbyGoal** projesinin üst düzey sistem mimarisini, teknik tasarım kararlarını ve mühendislik dokümantasyonunu özetleyen **kamusal (public) vitrin reposudur**. Çekirdek kaynak kodları, tescilli oyun motoru paketleri ve özel altyapı kod tabanları güvenlik ve fikri mülkiyet gerekçeleriyle **özel (private)** depolarda barındırılmaktadır.
 
-### 6.2. Ortam Değişkenleri Yapılandırması
-`apps/web/` dizininde `.env.local`, `apps/mobile/` dizininde `.env` dosyasını oluşturun:
+### 6.1. Mimari Bileşenler ve Modül Kapsamı
 
-```env
-# Veritabanı (Neon Serverless PostgreSQL)
-DATABASE_URL="postgresql://user:password@ep-sample-pool.eu-central-1.aws.neon.tech/neondb?sslmode=require"
+Özel depolarda yer alan monorepo çözümü şu temel katmanlardan oluşmaktadır:
+- **`apps/web`**: Next.js 14 App Router, Tailwind CSS ve Framer Motion tabanlı web arayüzü ve API Edge rotaları.
+- **`apps/mobile`**: React Native & Expo 51+ tabanlı hibrit mobil istemci.
+- **`packages/game-engine`**: Çevrimdışı ve çevrimiçi modlar için tohumlanmış PRNG tabanlı kural ve durum motoru.
+- **`packages/shared-types`**: İstemci ve sunucu katmanları arasında paylaşılan TypeScript tür sözleşmeleri ve DTO modelleri.
 
-# Gerçek Zamanlı Mesajlaşma (Ably)
-ABLY_API_KEY="your-ably-api-key"
+### 6.2. Üretim ve Entegrasyon Çevreleri
 
-# Uygulama Temel URL'si
-NEXT_PUBLIC_APP_URL="https://derbygoal.com"
-```
-
-### 6.3. Geliştirme Komutları
-
-1. **Bağımlılıkları Kurma:**
-   ```bash
-   pnpm install
-   ```
-
-2. **Statik Tip ve Sözdizimi Denetimi:**
-   ```bash
-   pnpm typecheck
-   ```
-
-3. **Web Uygulamasını Başlatma:**
-   ```bash
-   pnpm dev
-   ```
-
-4. **Mobil Uygulamayı Başlatma (Metro Bundler):**
-   ```bash
-   pnpm mobile:start
-   ```
-
-5. **Kod Standartları ve Linter Kontrolü:**
-   ```bash
-   pnpm lint
-   ```
+Proje üretim ortamında aşağıdaki harici ve sunucusuz servislerle entegre olarak çalışmaktadır:
+- **Veritabanı Katmanı:** Neon Serverless PostgreSQL & Drizzle ORM
+- **Gerçek Zamanlı İletişim:** Ably Realtime WebSocket altyapısı
+- **Ödeme & Satın Alma:** Web için Stripe, Mobil için RevenueCat entegrasyonu
 
 ---
 
